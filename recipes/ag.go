@@ -1,7 +1,6 @@
 package recipes
 
 import (
-	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -109,22 +108,7 @@ func (r *AgRecipe) Finalize(ctx *types.BuildContext, outDir string) error {
 		"target": target,
 	}).Info("Copying binary")
 
-	binary, err := os.Open(source)
-	if err != nil {
-		return err
-	}
-	defer binary.Close()
-
-	output, err := os.OpenFile(
-		target,
-		os.O_RDWR|os.O_CREATE|os.O_TRUNC,
-		0755)
-	if err != nil {
-		return err
-	}
-	defer output.Close()
-
-	if _, err := io.Copy(output, binary); err != nil {
+	if err := r.CopyFile(source, target, 0755); err != nil {
 		return err
 	}
 

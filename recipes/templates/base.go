@@ -2,6 +2,8 @@ package templates
 
 import (
 	"fmt"
+	"io"
+	"os"
 	"os/exec"
 	"path/filepath"
 
@@ -36,4 +38,28 @@ func (r *BaseRecipe) Strip(ctx *types.BuildContext, file string) error {
 		file,
 	)
 	return cmd.Run()
+}
+
+// CopyFile will copy a file from one location to another.
+func (r *BaseRecipe) CopyFile(source, target string, mode os.FileMode) error {
+	sourcef, err := os.Open(source)
+	if err != nil {
+		return err
+	}
+	defer sourcef.Close()
+
+	targetf, err := os.OpenFile(
+		target,
+		os.O_RDWR|os.O_CREATE|os.O_TRUNC,
+		mode)
+	if err != nil {
+		return err
+	}
+	defer targetf.Close()
+
+	if _, err := io.Copy(targetf, sourcef); err != nil {
+		return err
+	}
+
+	return nil
 }
