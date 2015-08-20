@@ -24,7 +24,7 @@ func main() {
 		BuildDir:  "/tmp/sbuild",
 		OutputDir: "/tmp/sout",
 		Platform:  "linux",
-		Arch:      "amd64",
+		Arch:      "arm",
 	}
 
 	err := builder.Build(os.Args[1], conf)

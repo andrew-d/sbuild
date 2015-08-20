@@ -59,6 +59,8 @@ func (r *AgRecipe) Build(ctx *types.BuildContext) error {
 	log.Infof("Running ./configure")
 	cmd = exec.Command(
 		"./configure",
+		"--host="+ctx.CrossPrefix,
+		"--build=i686",
 		"PKG_CONFIG=/bin/true",
 	)
 	cmd.Dir = srcdir
