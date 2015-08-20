@@ -25,7 +25,7 @@ func UnpackArchive(archive, intoDir string) error {
 		// TODO
 
 	} else if strings.HasSuffix(archive, ".tar.xz") {
-		// TODO
+		return unpackTarXz(archive, intoDir)
 
 	} else if strings.HasSuffix(archive, ".zip") {
 		return unpackZip(archive, intoDir)
@@ -72,3 +72,27 @@ var (
 		return exec.Command("unzip", archive, "-d", intoDir)
 	})
 )
+
+func unpackTarXz(archive, intoDir string) error {
+	cmd1 := exec.Command("xz", "-d", "-c", archive)
+	cmd2 := exec.Command("tar", "-C", intoDir, "-x")
+
+	stdout1, err := cmd1.StdoutPipe()
+	if err != nil {
+		return err
+	}
+
+	cmd2.Stdin = stdout1
+
+	if err := cmd2.Start(); err != nil {
+		return err
+	}
+	if err := cmd1.Run(); err != nil {
+		return err
+	}
+	if err := cmd2.Wait(); err != nil {
+		return err
+	}
+
+	return nil
+}
