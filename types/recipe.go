@@ -19,6 +19,9 @@ type BuildContext struct {
 	// Flags to make a build static.
 	StaticFlags string
 
+	// Environment variables from the dependencies.
+	DependencyEnv map[string]map[string]string
+
 	// Call this during Finalize() in order to add environment variables to
 	// this recipe's dependents.
 	AddDependentEnvVar func(key, value string)

@@ -141,8 +141,10 @@ func buildOne(name string, ctx *context) error {
 	// dependencies.
 	deps := dependencyNames(name)
 	env := ctx.rootEnv
+	envMap := make(map[string]map[string]string)
 	for _, dep := range deps {
 		if flags, ok := ctx.packageEnv[dep]; ok {
+			envMap[dep] = flags
 			for k, v := range flags {
 				env = env.Append(k, " "+v+" ")
 			}
@@ -163,10 +165,11 @@ func buildOne(name string, ctx *context) error {
 
 	// Run the build in this directory.
 	buildCtx := types.BuildContext{
-		SourceDir:   sourceDir,
-		Env:         env,
-		CrossPrefix: prefix,
-		StaticFlags: staticFlag,
+		SourceDir:     sourceDir,
+		Env:           env,
+		CrossPrefix:   prefix,
+		StaticFlags:   staticFlag,
+		DependencyEnv: envMap,
 	}
 
 	if err := recipe.Prepare(&buildCtx); err != nil {
@@ -213,21 +216,20 @@ func getRecipeDeps(recipe string) ([]string, error) {
 
 	var visit func(string) error
 	visit = func(curr string) error {
-		curr_deps := []string{}
-
 		recipe, found := recipes[curr]
 		if !found {
 			return fmt.Errorf("builder: recipe %s does not exist", curr)
 		}
 
 		for _, dep := range recipe.Info().Dependencies {
-			curr_deps = append(curr_deps, dep)
+			depgraph[dep] = append(depgraph[dep], curr)
 			if err := visit(dep); err != nil {
 				return err
 			}
 		}
 
-		depgraph[curr] = curr_deps
+		// Ensure that the current map entry exists.
+		depgraph[curr] = depgraph[curr]
 		return nil
 	}
 
@@ -237,6 +239,7 @@ func getRecipeDeps(recipe string) ([]string, error) {
 	}
 
 	// Toplogically sort dependencies
+	log.Infof("depgraph = %+v", depgraph)
 	order, cycle := topologicalSort(depgraph)
 	if len(cycle) > 0 {
 		return nil, fmt.Errorf("builder: dependency cycle detected: %+v", cycle)
