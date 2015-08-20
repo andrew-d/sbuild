@@ -5,5 +5,5 @@ import (
 )
 
 var (
-	log = logmgr.NewLogger("sbuild/builder")
+	log = logmgr.NewLogger("sbuild/recipes")
 )
