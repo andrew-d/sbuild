@@ -7,16 +7,16 @@ import (
 )
 
 var (
-	recipes = make(map[string]types.Recipe)
+	recipesRegistry = make(map[string]types.Recipe)
 )
 
 func RegisterRecipe(r types.Recipe) {
 	name := r.Info().Name
-	if _, exists := recipes[name]; exists {
+	if _, exists := recipesRegistry[name]; exists {
 		panic("recipe with this name already exists")
 	}
 
-	recipes[name] = r
+	recipesRegistry[name] = r
 }
 
 // Returns all dependency names for the given named recipe.  Will panic if the
@@ -27,7 +27,7 @@ func dependencyNames(name string) []string {
 
 	var visit func(string)
 	visit = func(name string) {
-		recipe, ok := recipes[name]
+		recipe, ok := recipesRegistry[name]
 		if !ok {
 			panic(fmt.Sprintf("recipe with name '%s' not found", name))
 		}

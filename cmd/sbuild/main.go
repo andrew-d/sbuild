@@ -43,12 +43,13 @@ func main() {
 	flag.Parse()
 	conf := &config.BuildConfig{
 		BuildDir:  flagBuildDir,
-		OutputDir: flag.Arg(1),
+		OutputDir: flag.Arg(0),
 		Platform:  flagPlatform,
 		Arch:      flagArch,
 	}
 
-	err := builder.Build(flag.Arg(0), conf)
+	recipes := flag.Args()[1:]
+	err := builder.Build(recipes, conf)
 	if err != nil {
 		log.WithField("err", err).Error("Error building")
 	} else {

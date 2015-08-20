@@ -30,8 +30,8 @@ var (
 
 // Build will run a build for the recipe with the given name and using the
 // provided configuration.
-func Build(recipe string, config *config.BuildConfig) error {
-	log.WithField("recipe", recipe).Info("Starting build")
+func Build(recipes []string, config *config.BuildConfig) error {
+	log.WithField("recipes", recipes).Info("Starting build")
 	cacheDir := filepath.Join(config.BuildDir, ".cache")
 
 	// Ensure build, output, and cache directories exist.
@@ -48,8 +48,8 @@ func Build(recipe string, config *config.BuildConfig) error {
 		}
 	}
 
-	// Get dependency order.
-	deps, err := getRecipeDeps(recipe)
+	// Get dependency order for all input recipes.
+	deps, err := getRecipeDeps(recipes)
 	if err != nil {
 		log.WithField("err", err).Error("Could not get recipe dependencies")
 		return err
@@ -85,7 +85,7 @@ func Build(recipe string, config *config.BuildConfig) error {
 
 func buildOne(name string, ctx *context) error {
 	log.WithField("recipe", name).Info("Building single recipe")
-	recipe := recipes[name]
+	recipe := recipesRegistry[name]
 
 	// Remove and re-create the source directory for this build.
 	sourceDir := filepath.Join(ctx.config.BuildDir, name)
@@ -221,12 +221,12 @@ func buildOne(name string, ctx *context) error {
 
 // Returns a sorted list of dependencies for the given recipe name, or an error
 // describing a dependency cycle.
-func getRecipeDeps(recipe string) ([]string, error) {
+func getRecipeDeps(recipes []string) ([]string, error) {
 	depgraph := make(graph)
 
 	var visit func(string) error
 	visit = func(curr string) error {
-		recipe, found := recipes[curr]
+		recipe, found := recipesRegistry[curr]
 		if !found {
 			return fmt.Errorf("builder: recipe %s does not exist", curr)
 		}
@@ -244,8 +244,10 @@ func getRecipeDeps(recipe string) ([]string, error) {
 	}
 
 	// Calculate dependency graph.
-	if err := visit(recipe); err != nil {
-		return nil, err
+	for _, recipe := range recipes {
+		if err := visit(recipe); err != nil {
+			return nil, err
+		}
 	}
 
 	// Toplogically sort dependencies
