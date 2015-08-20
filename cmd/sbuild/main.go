@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/Sirupsen/logrus"
+	flag "github.com/ogier/pflag"
 
 	"github.com/andrew-d/sbuild/builder"
 	"github.com/andrew-d/sbuild/config"
@@ -14,20 +15,40 @@ import (
 
 var (
 	log = logmgr.NewLogger("main")
+
+	flagPlatform string
+	flagArch     string
+	flagBuildDir string
+	flagVerbose  bool
 )
+
+func init() {
+	flag.StringVarP(&flagPlatform, "platform", "p", "linux",
+		"the platform to build for")
+	flag.StringVarP(&flagArch, "arch", "a", "amd64",
+		"the architecture to build for")
+	flag.StringVar(&flagBuildDir, "build-dir", "/tmp/sbuild",
+		"the directory to use as a build directory")
+	flag.BoolVarP(&flagVerbose, "verbose", "v", false, "be verbose")
+}
 
 func main() {
 	logmgr.SetOutput(os.Stderr)
-	logmgr.SetLevel(logrus.DebugLevel)
-
-	conf := &config.BuildConfig{
-		BuildDir:  "/tmp/sbuild",
-		OutputDir: "/tmp/sout",
-		Platform:  "linux",
-		Arch:      "arm",
+	if flagVerbose {
+		logmgr.SetLevel(logrus.DebugLevel)
+	} else {
+		logmgr.SetLevel(logrus.InfoLevel)
 	}
 
-	err := builder.Build(os.Args[1], conf)
+	flag.Parse()
+	conf := &config.BuildConfig{
+		BuildDir:  flagBuildDir,
+		OutputDir: flag.Arg(1),
+		Platform:  flagPlatform,
+		Arch:      flagArch,
+	}
+
+	err := builder.Build(flag.Arg(0), conf)
 	if err != nil {
 		log.WithField("err", err).Error("Error building")
 	} else {
