@@ -130,10 +130,17 @@ func (r *FileRecipe) Build(ctx *types.BuildContext) error {
 		"--build=i686",
 	)
 	cmd.Dir = srcdir
-	cmd.Env = ctx.Env.
+	env := ctx.Env.
 		Append("CC", ctx.StaticFlags).
-		Set("CFLAGS", ctx.StaticFlags).
-		AsSlice()
+		Append("CPPFLAGS", "-D_GNU_SOURCE -D_BSD_SOURCE").
+		Set("CFLAGS", ctx.StaticFlags)
+
+	// If we're not on Darwin, we need these.
+	if ctx.Platform != "darwin" {
+		env = env.Append("CFLAGS", " -Wl,-static -static-libgcc ")
+	}
+
+	cmd.Env = env.AsSlice()
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stdout
 
