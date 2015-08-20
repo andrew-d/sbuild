@@ -124,6 +124,13 @@ func (r *AgRecipe) Finalize(ctx *types.BuildContext, outDir string) error {
 	}
 	defer output.Close()
 
-	_, err = io.Copy(output, binary)
-	return err
+	if _, err := io.Copy(output, binary); err != nil {
+		return err
+	}
+
+	if err := r.Strip(ctx, target); err != nil {
+		return err
+	}
+
+	return nil
 }

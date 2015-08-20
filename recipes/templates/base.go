@@ -2,6 +2,7 @@ package templates
 
 import (
 	"fmt"
+	"os/exec"
 	"path/filepath"
 
 	"github.com/andrew-d/sbuild/types"
@@ -26,4 +27,13 @@ func (r *BaseRecipe) UnpackedDir(ctx *types.BuildContext, info *types.RecipeInfo
 		ctx.SourceDir,
 		fmt.Sprintf("%s-%s", info.Name, info.Version),
 	)
+}
+
+// Strip will run the environment's strip command on the given file.
+func (r *BaseRecipe) Strip(ctx *types.BuildContext, file string) error {
+	cmd := exec.Command(
+		ctx.Env.Get("STRIP"),
+		file,
+	)
+	return cmd.Run()
 }
