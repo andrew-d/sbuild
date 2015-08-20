@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -15,19 +15,11 @@ import (
 
 type sourceCache struct {
 	rootDir string
-	client  *http.Client
 }
 
 func newSourceCache(rootDir string) (*sourceCache, error) {
-	tr := &http.Transport{
-		// We set this so the transport doesn't unzip .gz files that are
-		// downloaded.
-		DisableCompression: true,
-	}
-
 	ret := &sourceCache{
 		rootDir: rootDir,
-		client:  &http.Client{Transport: tr},
 	}
 	return ret, nil
 }
@@ -102,33 +94,17 @@ func (c *sourceCache) Fetch(recipe, source, hash, intoDir string) error {
 }
 
 func (c *sourceCache) download(url, intoPath string) error {
-	f, err := os.Create(intoPath)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
+	cmd := exec.Command(
+		"curl",
+		"-L",
+		"-o", intoPath,
+		url,
+	)
+	cmd.Env = nil
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return err
-	}
-
-	// Spoof curl, for now.
-	req.Header.Set("User-Agent", "curl 7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8y zlib/1.2.5")
-
-	// Actually do the request.
-	resp, err := c.client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	_, err = io.Copy(f, resp.Body)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return cmd.Run()
 }
 
 func (c *sourceCache) compareHash(path, hash string) error {
