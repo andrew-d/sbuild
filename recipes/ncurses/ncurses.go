@@ -38,6 +38,7 @@ func (r *NcursesRecipe) Info() *types.RecipeInfo {
 		Sums: []string{
 			"9046298fb440324c9d4135ecea7879ffed8546dd1b58e59430ea07a4633f563b",
 		},
+		Library: true,
 	}
 }
 

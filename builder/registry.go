@@ -41,3 +41,16 @@ func dependencyNames(name string) []string {
 	visit(name)
 	return depNames
 }
+
+// Return the names of all binary dependencies.
+func AllBinaries() []string {
+	names := []string{}
+	for _, recipe := range recipesRegistry {
+		info := recipe.Info()
+		if info.Binary {
+			names = append(names, info.Name)
+		}
+	}
+
+	return names
+}

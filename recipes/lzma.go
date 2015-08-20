@@ -30,6 +30,7 @@ func (r *LzmaRecipe) Info() *types.RecipeInfo {
 		Sums: []string{
 			"cac71b31ed322a487f1da1f10dfcf47f8855f97ff2c23b92680c7ae7be58babb",
 		},
+		Library: true,
 	}
 }
 

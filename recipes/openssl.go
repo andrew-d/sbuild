@@ -30,6 +30,7 @@ func (r *OpenSSLRecipe) Info() *types.RecipeInfo {
 		Sums: []string{
 			"671c36487785628a703374c652ad2cebea45fa920ae5681515df25d9f2c9a8c8",
 		},
+		Library: true,
 	}
 }
 

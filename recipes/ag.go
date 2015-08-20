@@ -31,6 +31,7 @@ func (r *AgRecipe) Info() *types.RecipeInfo {
 		Sums: []string{
 			"a3b61b80f96647dbe89c7e89a8fa7612545db6fa4a313c0ef8a574d01e7da5db",
 		},
+		Binary: true,
 	}
 }
 

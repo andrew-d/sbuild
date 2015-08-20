@@ -73,4 +73,8 @@ type RecipeInfo struct {
 
 	// SHA256 hashes for each source in `Sources`.
 	Sums []string
+
+	// Whether this is a library or binary recipe (can be both).
+	Library bool
+	Binary  bool
 }

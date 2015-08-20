@@ -49,6 +49,13 @@ func main() {
 	}
 
 	recipes := flag.Args()[1:]
+
+	// Special case - passing a single 'all' means build all binaries.
+	if len(recipes) == 1 && recipes[0] == "all" {
+		recipes = builder.AllBinaries()
+	}
+
+	log.WithField("recipes", recipes).Info("Starting build")
 	err := builder.Build(recipes, conf)
 	if err != nil {
 		log.WithField("err", err).Error("Error building")

@@ -33,6 +33,7 @@ func (r *FileRecipe) Info() *types.RecipeInfo {
 		Sums: []string{
 			"52e160662c45d8b204c583552d80e4ab389a3a641f9745a458da2f6761c9b206",
 		},
+		Binary: true,
 	}
 }
 

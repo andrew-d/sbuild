@@ -32,6 +32,7 @@ func (r *PvRecipe) Info() *types.RecipeInfo {
 		Sums: []string{
 			"0ece824e0da27b384d11d1de371f20cafac465e038041adab57fcf4b5036ef8d",
 		},
+		Binary: true,
 	}
 }
 

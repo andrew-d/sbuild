@@ -29,6 +29,7 @@ func (r *PcreRecipe) Info() *types.RecipeInfo {
 		Sums: []string{
 			"51679ea8006ce31379fb0860e46dd86665d864b5020fc9cd19e71260eef4789d",
 		},
+		Library: true,
 	}
 }
 
