@@ -26,7 +26,7 @@ func (r *FileRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
 		Name:         "file",
 		Version:      "5.24",
-		Dependencies: []string{},
+		Dependencies: []string{"zlib"},
 		Sources: []string{
 			"file-5.24.tar.gz::https://github.com/file/file/archive/FILE5_24.tar.gz",
 		},
