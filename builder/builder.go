@@ -155,6 +155,14 @@ func buildOne(name string, ctx *context) error {
 	prefix := CrossPrefix(ctx.config.Platform, ctx.config.Arch)
 	env = setCrossEnv(prefix, env)
 
+	// We special-case darwin here, since we're using osxcross.
+	if ctx.config.Platform == "darwin" {
+		env = env.
+			Set("CC", prefix+"-clang").
+			Set("CXX", prefix+"-clang++").
+			Set("OSXCROSS_NO_INCLUDE_PATH_WARNINGS", "1")
+	}
+
 	// Set up the static flag
 	var staticFlag string
 	if ctx.config.Platform == "darwin" {
