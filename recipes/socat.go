@@ -12,61 +12,45 @@ import (
 	"github.com/andrew-d/sbuild/types"
 )
 
-type AgRecipe struct {
+type SocatRecipe struct {
 	*templates.BaseRecipe
 }
 
 func init() {
-	builder.RegisterRecipe(&AgRecipe{})
+	builder.RegisterRecipe(&SocatRecipe{})
 }
 
-func (r *AgRecipe) Info() *types.RecipeInfo {
+func (r *SocatRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "the_silver_searcher",
-		Version:      "0.30.0",
-		Dependencies: []string{"zlib", "lzma", "pcre"},
+		Name:         "socat",
+		Version:      "1.7.3.0",
+		Dependencies: []string{"openssl", "readline", "ncurses"},
 		Sources: []string{
-			"the_silver_searcher-0.30.0.tar.gz::https://github.com/ggreer/the_silver_searcher/archive/0.30.0.tar.gz",
+			"http://www.dest-unreach.org/socat/download/socat-1.7.3.0.tar.gz",
 		},
 		Sums: []string{
-			"a3b61b80f96647dbe89c7e89a8fa7612545db6fa4a313c0ef8a574d01e7da5db",
+			"f8de4a2aaadb406a2e475d18cf3b9f29e322d4e5803d8106716a01fd4e64b186",
 		},
 	}
 }
 
-func (r *AgRecipe) Build(ctx *types.BuildContext) error {
-	log.Info("Building the_silver_searcher")
+func (r *SocatRecipe) Build(ctx *types.BuildContext) error {
+	log.Info("Building socat")
 	srcdir := r.UnpackedDir(ctx, r.Info())
 
 	var cmd *exec.Cmd
-
-	// Run autotools
-	cmd = exec.Command("autoreconf", "-i")
-	cmd.Dir = srcdir
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		log.WithField("err", err).Error("Could not run autotools")
-		return err
-	}
 
 	log.Infof("Running ./configure")
 	cmd = exec.Command(
 		"./configure",
 		"--host="+ctx.CrossPrefix,
 		"--build=i686",
-		"PKG_CONFIG=/bin/true",
 	)
 	cmd.Dir = srcdir
 	cmd.Env = ctx.Env.
 		Append("CC", ctx.StaticFlags).
+		Append("CPPFLAGS", "-DNETDB_INTERNAL=-1").
 		Set("CFLAGS", "-fPIC "+ctx.StaticFlags).
-		Set("PCRE_LIBS", ctx.DependencyEnv["pcre"]["LDFLAGS"]).
-		Set("PCRE_CFLAGS", ctx.DependencyEnv["pcre"]["CFLAGS"]).
-		Set("LZMA_LIBS", ctx.DependencyEnv["lzma"]["LDFLAGS"]).
-		Set("LZMA_CFLAGS", ctx.DependencyEnv["lzma"]["CFLAGS"]).
-		Set("ZLIB_LIBS", ctx.DependencyEnv["zlib"]["LDFLAGS"]).
-		Set("ZLIB_CFLAGS", ctx.DependencyEnv["zlib"]["CFLAGS"]).
 		AsSlice()
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stdout
@@ -86,15 +70,15 @@ func (r *AgRecipe) Build(ctx *types.BuildContext) error {
 		return err
 	}
 
-	log.Info("Finished building the_silver_searcher")
+	log.Info("Finished building socat")
 	return nil
 }
 
-func (r *AgRecipe) Finalize(ctx *types.BuildContext, outDir string) error {
+func (r *SocatRecipe) Finalize(ctx *types.BuildContext, outDir string) error {
 	srcdir := r.UnpackedDir(ctx, r.Info())
 
-	source := filepath.Join(srcdir, "ag")
-	target := filepath.Join(outDir, "ag")
+	source := filepath.Join(srcdir, "socat")
+	target := filepath.Join(outDir, "socat")
 
 	log.WithFields(logrus.Fields{
 		"source": source,

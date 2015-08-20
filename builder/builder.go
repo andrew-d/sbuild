@@ -169,6 +169,8 @@ func buildOne(name string, ctx *context) error {
 		Env:           env,
 		CrossPrefix:   prefix,
 		StaticFlags:   staticFlag,
+		Platform:      ctx.config.Platform,
+		Arch:          ctx.config.Arch,
 		DependencyEnv: envMap,
 	}
 
@@ -239,7 +241,6 @@ func getRecipeDeps(recipe string) ([]string, error) {
 	}
 
 	// Toplogically sort dependencies
-	log.Infof("depgraph = %+v", depgraph)
 	order, cycle := topologicalSort(depgraph)
 	if len(cycle) > 0 {
 		return nil, fmt.Errorf("builder: dependency cycle detected: %+v", cycle)

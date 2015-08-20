@@ -19,6 +19,10 @@ type BuildContext struct {
 	// Flags to make a build static.
 	StaticFlags string
 
+	// Input configuration
+	Platform string
+	Arch     string
+
 	// Environment variables from the dependencies.
 	DependencyEnv map[string]map[string]string
 
