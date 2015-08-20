@@ -39,19 +39,14 @@ func (r *AgRecipe) Build(ctx *types.BuildContext) error {
 	srcdir := r.UnpackedDir(ctx, r.Info())
 
 	var cmd *exec.Cmd
-	for _, runme := range []string{"aclocal", "autoconf", "autoheader"} {
-		log.Infof("Running command: %s", runme)
-		cmd = exec.Command(runme)
-		cmd.Dir = srcdir
-		if err := cmd.Run(); err != nil {
-			return err
-		}
-	}
 
-	log.Infof("Running command: automake --add-missing")
-	cmd = exec.Command("automake", "--add-missing")
+	// Run autotools
+	cmd = exec.Command("autoreconf", "-i")
 	cmd.Dir = srcdir
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
+		log.WithField("err", err).Error("Could not run autotools")
 		return err
 	}
 
