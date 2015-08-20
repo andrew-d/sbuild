@@ -1,8 +1,12 @@
 package recipes
 
 import (
+	"io"
 	"os"
 	"os/exec"
+	"path/filepath"
+
+	"github.com/Sirupsen/logrus"
 
 	"github.com/andrew-d/sbuild/builder"
 	"github.com/andrew-d/sbuild/recipes/templates"
@@ -92,10 +96,32 @@ func (r *AgRecipe) Build(ctx *types.BuildContext) error {
 	return nil
 }
 
-func (r *AgRecipe) Finalize(ctx *types.BuildContext) error {
+func (r *AgRecipe) Finalize(ctx *types.BuildContext, outDir string) error {
 	srcdir := r.UnpackedDir(ctx, r.Info())
 
-	// TODO: copy output
-	_ = srcdir
-	return nil
+	source := filepath.Join(srcdir, "ag")
+	target := filepath.Join(outDir, "ag")
+
+	log.WithFields(logrus.Fields{
+		"source": source,
+		"target": target,
+	}).Info("Copying binary")
+
+	binary, err := os.Open(source)
+	if err != nil {
+		return err
+	}
+	defer binary.Close()
+
+	output, err := os.OpenFile(
+		target,
+		os.O_RDWR|os.O_CREATE|os.O_TRUNC,
+		0755)
+	if err != nil {
+		return err
+	}
+	defer output.Close()
+
+	_, err = io.Copy(output, binary)
+	return err
 }

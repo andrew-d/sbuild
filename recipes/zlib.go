@@ -64,7 +64,7 @@ func (r *ZlibRecipe) Build(ctx *types.BuildContext) error {
 	return nil
 }
 
-func (r *ZlibRecipe) Finalize(ctx *types.BuildContext) error {
+func (r *ZlibRecipe) Finalize(ctx *types.BuildContext, outDir string) error {
 	srcdir := r.UnpackedDir(ctx, r.Info())
 	ctx.AddDependentEnvVar(
 		"CPPFLAGS",

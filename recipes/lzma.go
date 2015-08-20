@@ -71,7 +71,7 @@ func (r *LzmaRecipe) Build(ctx *types.BuildContext) error {
 	return nil
 }
 
-func (r *LzmaRecipe) Finalize(ctx *types.BuildContext) error {
+func (r *LzmaRecipe) Finalize(ctx *types.BuildContext, outDir string) error {
 	srcdir := filepath.Join(ctx.SourceDir, fmt.Sprintf("xz-%s", r.Info().Version))
 	ctx.AddDependentEnvVar(
 		"CPPFLAGS",

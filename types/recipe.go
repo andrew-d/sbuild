@@ -45,7 +45,7 @@ type Recipe interface {
 	// Finalize the build.  If building a binary, files from the build should
 	// be copied to the output directory.  If building a library, the recipe
 	// should set the appropriate flags in the per-recipe environment.
-	Finalize(ctx *BuildContext) error
+	Finalize(ctx *BuildContext, outDir string) error
 }
 
 // RecipeInfo is a struct containing information about a recipe.

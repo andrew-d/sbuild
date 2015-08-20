@@ -198,7 +198,7 @@ func buildOne(name string, ctx *context) error {
 		mm[key] = value
 	}
 
-	if err := recipe.Finalize(&buildCtx); err != nil {
+	if err := recipe.Finalize(&buildCtx, ctx.config.OutputDir); err != nil {
 		log.WithFields(logrus.Fields{
 			"recipe": name,
 			"err":    err,

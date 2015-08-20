@@ -14,7 +14,7 @@ func (r *BaseRecipe) Prepare(ctx *types.BuildContext) error {
 	return nil
 }
 
-func (r *BaseRecipe) Finalize(ctx *types.BuildContext) error {
+func (r *BaseRecipe) Finalize(ctx *types.BuildContext, outDir string) error {
 	// Do nothing by default.
 	return nil
 }

@@ -70,7 +70,7 @@ func (r *PcreRecipe) Build(ctx *types.BuildContext) error {
 	return nil
 }
 
-func (r *PcreRecipe) Finalize(ctx *types.BuildContext) error {
+func (r *PcreRecipe) Finalize(ctx *types.BuildContext, outDir string) error {
 	srcdir := r.UnpackedDir(ctx, r.Info())
 	ctx.AddDependentEnvVar(
 		"CPPFLAGS",
