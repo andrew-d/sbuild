@@ -26,7 +26,7 @@ func (r *AgRecipe) Info() *types.RecipeInfo {
 		Version:      "0.30.0",
 		Dependencies: []string{"zlib", "lzma", "pcre"},
 		Sources: []string{
-			"the_silver_searcher-0.30.0.tar.gz::https://github.com/ggreer/the_silver_searcher/archive/0.30.0.tar.gz",
+			"${name}-${version}.tar.gz::https://github.com/ggreer/the_silver_searcher/archive/${version}.tar.gz",
 		},
 		Sums: []string{
 			"a3b61b80f96647dbe89c7e89a8fa7612545db6fa4a313c0ef8a574d01e7da5db",

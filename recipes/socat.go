@@ -26,7 +26,7 @@ func (r *SocatRecipe) Info() *types.RecipeInfo {
 		Version:      "1.7.3.0",
 		Dependencies: []string{"openssl", "readline", "ncurses"},
 		Sources: []string{
-			"http://www.dest-unreach.org/socat/download/socat-1.7.3.0.tar.gz",
+			"http://www.dest-unreach.org/socat/download/socat-${version}.tar.gz",
 		},
 		Sums: []string{
 			"f8de4a2aaadb406a2e475d18cf3b9f29e322d4e5803d8106716a01fd4e64b186",

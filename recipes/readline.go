@@ -24,7 +24,7 @@ func (r *ReadlineRecipe) Info() *types.RecipeInfo {
 		Version:      "6.3",
 		Dependencies: nil,
 		Sources: []string{
-			"ftp://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz",
+			"ftp://ftp.gnu.org/gnu/readline/readline-${version}.tar.gz",
 		},
 		Sums: []string{
 			"56ba6071b9462f980c5a72ab0023893b65ba6debb4eeb475d7a563dc65cafd43",

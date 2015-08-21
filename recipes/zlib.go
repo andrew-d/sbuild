@@ -25,7 +25,7 @@ func (r *ZlibRecipe) Info() *types.RecipeInfo {
 		Version:      "1.2.8",
 		Dependencies: nil,
 		Sources: []string{
-			"http://zlib.net/zlib-1.2.8.tar.gz",
+			"http://zlib.net/zlib-${version}.tar.gz",
 		},
 		Sums: []string{
 			"36658cb768a54c1d4dec43c3116c27ed893e88b02ecfcb44f2166f9c0b7f2a0d",

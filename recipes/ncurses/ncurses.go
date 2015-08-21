@@ -33,7 +33,7 @@ func (r *NcursesRecipe) Info() *types.RecipeInfo {
 		Version:      "5.9",
 		Dependencies: nil,
 		Sources: []string{
-			"ncurses-5.9.tar.gz::http://invisible-island.net/datafiles/release/ncurses.tar.gz",
+			"${name}-${version}.tar.gz::http://invisible-island.net/datafiles/release/ncurses.tar.gz",
 		},
 		Sums: []string{
 			"9046298fb440324c9d4135ecea7879ffed8546dd1b58e59430ea07a4633f563b",

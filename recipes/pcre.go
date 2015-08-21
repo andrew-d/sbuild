@@ -24,7 +24,7 @@ func (r *PcreRecipe) Info() *types.RecipeInfo {
 		Version:      "8.37",
 		Dependencies: nil,
 		Sources: []string{
-			"http://downloads.sourceforge.net/project/pcre/pcre/8.37/pcre-8.37.tar.bz2",
+			"http://downloads.sourceforge.net/project/pcre/pcre/${version}/pcre-${version}.tar.bz2",
 		},
 		Sums: []string{
 			"51679ea8006ce31379fb0860e46dd86665d864b5020fc9cd19e71260eef4789d",

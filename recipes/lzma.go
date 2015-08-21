@@ -25,7 +25,7 @@ func (r *LzmaRecipe) Info() *types.RecipeInfo {
 		Version:      "5.0.8",
 		Dependencies: nil,
 		Sources: []string{
-			"http://tukaani.org/xz/xz-5.0.8.tar.gz",
+			"http://tukaani.org/xz/xz-${version}.tar.gz",
 		},
 		Sums: []string{
 			"cac71b31ed322a487f1da1f10dfcf47f8855f97ff2c23b92680c7ae7be58babb",

@@ -25,7 +25,7 @@ func (r *OpenSSLRecipe) Info() *types.RecipeInfo {
 		Version:      "1.0.2d",
 		Dependencies: nil,
 		Sources: []string{
-			"https://openssl.org/source/openssl-1.0.2d.tar.gz",
+			"https://openssl.org/source/openssl-${version}.tar.gz",
 		},
 		Sums: []string{
 			"671c36487785628a703374c652ad2cebea45fa920ae5681515df25d9f2c9a8c8",

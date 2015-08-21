@@ -27,7 +27,7 @@ func (r *PvRecipe) Info() *types.RecipeInfo {
 		Version:      "1.6.0",
 		Dependencies: []string{},
 		Sources: []string{
-			"https://www.ivarch.com/programs/sources/pv-1.6.0.tar.bz2",
+			"https://www.ivarch.com/programs/sources/pv-${version}.tar.bz2",
 		},
 		Sums: []string{
 			"0ece824e0da27b384d11d1de371f20cafac465e038041adab57fcf4b5036ef8d",

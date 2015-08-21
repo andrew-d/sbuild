@@ -106,30 +106,41 @@ func buildOne(name string, ctx *context) error {
 
 	info := recipe.Info()
 	for i, source := range info.Sources {
+		// Expand the source.
+		expandedSource := os.Expand(source, func(vname string) string {
+			if vname == "name" {
+				return info.Name
+			} else if vname == "version" {
+				return info.Version
+			}
+
+			panic(fmt.Sprintf("unknown expansion variable: %s", vname))
+		})
+
 		// Fetch the source
 		if err := ctx.cache.Fetch(
 			name,
-			source,
+			expandedSource,
 			info.Sums[i],
 			sourceDir,
 		); err != nil {
 			log.WithFields(logrus.Fields{
 				"recipe": name,
-				"source": source,
+				"source": expandedSource,
 				"hash":   info.Sums[i],
 				"err":    err,
 			}).Error("Could not fetch source")
 			return err
 		}
 
-		filename, _ := SplitSource(source)
+		filename, _ := SplitSource(expandedSource)
 		sourcePath := filepath.Join(sourceDir, filename)
 
 		// Unpack it.
 		if err := util.UnpackArchive(sourcePath, sourceDir); err != nil {
 			log.WithFields(logrus.Fields{
 				"recipe": name,
-				"source": source,
+				"source": expandedSource,
 				"err":    err,
 			}).Error("Could not unpack source")
 			return err

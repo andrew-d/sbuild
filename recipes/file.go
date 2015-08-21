@@ -28,7 +28,7 @@ func (r *FileRecipe) Info() *types.RecipeInfo {
 		Version:      "5.24",
 		Dependencies: []string{"zlib"},
 		Sources: []string{
-			"file-5.24.tar.gz::https://github.com/file/file/archive/FILE5_24.tar.gz",
+			"${name}-${version}.tar.gz::https://github.com/file/file/archive/FILE5_24.tar.gz",
 		},
 		Sums: []string{
 			"52e160662c45d8b204c583552d80e4ab389a3a641f9745a458da2f6761c9b206",
