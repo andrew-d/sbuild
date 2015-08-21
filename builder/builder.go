@@ -14,6 +14,8 @@ import (
 	"github.com/andrew-d/sbuild/util"
 )
 
+const DETERMINISTIC = false
+
 // Keeps information about a single build.
 type context struct {
 	rootEnv *env.Env
@@ -180,6 +182,18 @@ func buildOne(name string, ctx *context) error {
 		staticFlag = " -flto -O3 -mmacosx-version-min=10.6 "
 	} else {
 		staticFlag = " -static "
+	}
+
+	// Set up the random seed we pass to each build.  This is a part of the
+	// compiler command to ensure that it gets passed correctly.
+	if DETERMINISTIC {
+		randomSeed := fmt.Sprintf(
+			" -frandom-seed=build-%s-%s-%s ",
+			name,
+			ctx.config.Platform,
+			ctx.config.Arch,
+		)
+		env = env.Append("CC", randomSeed).Append("CXX", randomSeed)
 	}
 
 	// Run the build in this directory.
