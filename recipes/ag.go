@@ -22,9 +22,8 @@ func init() {
 
 func (r *AgRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "the_silver_searcher",
-		Version:      "0.30.0",
-		Dependencies: []string{"zlib", "lzma", "pcre"},
+		Name:    "the_silver_searcher",
+		Version: "0.30.0",
 		Sources: []string{
 			"${name}-${version}.tar.gz::https://github.com/ggreer/the_silver_searcher/archive/${version}.tar.gz",
 		},
@@ -33,6 +32,10 @@ func (r *AgRecipe) Info() *types.RecipeInfo {
 		},
 		Binary: true,
 	}
+}
+
+func (r *AgRecipe) Dependencies(platform, arch string) []string {
+	return []string{"zlib", "lzma", "pcre"}
 }
 
 func (r *AgRecipe) Build(ctx *types.BuildContext) error {

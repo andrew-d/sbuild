@@ -37,6 +37,9 @@ type Recipe interface {
 	// Info() retrieves information about this recipe.  It must not return nil.
 	Info() *RecipeInfo
 
+	// Dependencies() returns any dependencies of this recipe.
+	Dependencies(platform, arch string) []string
+
 	// Prepare the build.  This step is where you should apply patches to the
 	// fetched/extracted source code, for example.
 	Prepare(ctx *BuildContext) error
@@ -59,9 +62,6 @@ type RecipeInfo struct {
 
 	// The version of this recipe.
 	Version string
-
-	// Any dependencies of this recipe.
-	Dependencies []string
 
 	// Sources for this recipe.
 	// Format:

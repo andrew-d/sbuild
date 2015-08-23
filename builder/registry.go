@@ -22,7 +22,7 @@ func RegisterRecipe(r types.Recipe) {
 // Returns all dependency names for the given named recipe.  Will panic if the
 // recipe name given doesn't exist in the map, or if any dependencies don't
 // exist.
-func dependencyNames(name string) []string {
+func dependencyNames(name, platform, arch string) []string {
 	depNames := []string{}
 
 	var visit func(string)
@@ -32,7 +32,7 @@ func dependencyNames(name string) []string {
 			panic(fmt.Sprintf("recipe with name '%s' not found", name))
 		}
 
-		for _, dep := range recipe.Info().Dependencies {
+		for _, dep := range recipe.Dependencies(platform, arch) {
 			depNames = append(depNames, dep)
 			visit(dep)
 		}

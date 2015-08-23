@@ -21,9 +21,8 @@ func init() {
 
 func (r *OpenSSLRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "openssl",
-		Version:      "1.0.2d",
-		Dependencies: nil,
+		Name:    "openssl",
+		Version: "1.0.2d",
 		Sources: []string{
 			"https://openssl.org/source/openssl-${version}.tar.gz",
 		},
@@ -32,6 +31,10 @@ func (r *OpenSSLRecipe) Info() *types.RecipeInfo {
 		},
 		Library: true,
 	}
+}
+
+func (r *OpenSSLRecipe) Dependencies(platform, arch string) []string {
+	return nil
 }
 
 func (r *OpenSSLRecipe) Build(ctx *types.BuildContext) error {

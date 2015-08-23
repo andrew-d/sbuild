@@ -24,9 +24,8 @@ func init() {
 
 func (r *FileRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "file",
-		Version:      "5.24",
-		Dependencies: []string{"zlib"},
+		Name:    "file",
+		Version: "5.24",
 		Sources: []string{
 			"${name}-${version}.tar.gz::https://github.com/file/file/archive/FILE5_24.tar.gz",
 		},
@@ -35,6 +34,10 @@ func (r *FileRecipe) Info() *types.RecipeInfo {
 		},
 		Binary: true,
 	}
+}
+
+func (r *FileRecipe) Dependencies(platform, arch string) []string {
+	return []string{"zlib"}
 }
 
 func (r *FileRecipe) UnpackedDir(ctx *types.BuildContext) string {

@@ -23,9 +23,8 @@ func init() {
 
 func (r *PvRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "pv",
-		Version:      "1.6.0",
-		Dependencies: []string{},
+		Name:    "pv",
+		Version: "1.6.0",
 		Sources: []string{
 			"https://www.ivarch.com/programs/sources/pv-${version}.tar.bz2",
 		},
@@ -34,6 +33,10 @@ func (r *PvRecipe) Info() *types.RecipeInfo {
 		},
 		Binary: true,
 	}
+}
+
+func (r *PvRecipe) Dependencies(platform, arch string) []string {
+	return nil
 }
 
 func (r *PvRecipe) Build(ctx *types.BuildContext) error {

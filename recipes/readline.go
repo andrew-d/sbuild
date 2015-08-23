@@ -20,9 +20,8 @@ func init() {
 
 func (r *ReadlineRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "readline",
-		Version:      "6.3",
-		Dependencies: nil,
+		Name:    "readline",
+		Version: "6.3",
 		Sources: []string{
 			"ftp://ftp.gnu.org/gnu/readline/readline-${version}.tar.gz",
 		},
@@ -31,6 +30,10 @@ func (r *ReadlineRecipe) Info() *types.RecipeInfo {
 		},
 		Library: true,
 	}
+}
+
+func (r *ReadlineRecipe) Dependencies(platform, arch string) []string {
+	return nil
 }
 
 func (r *ReadlineRecipe) Prepare(ctx *types.BuildContext) error {

@@ -29,9 +29,8 @@ func init() {
 
 func (r *NcursesRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "ncurses",
-		Version:      "5.9",
-		Dependencies: nil,
+		Name:    "ncurses",
+		Version: "5.9",
 		Sources: []string{
 			"${name}-${version}.tar.gz::http://invisible-island.net/datafiles/release/ncurses.tar.gz",
 		},
@@ -40,6 +39,10 @@ func (r *NcursesRecipe) Info() *types.RecipeInfo {
 		},
 		Library: true,
 	}
+}
+
+func (r *NcursesRecipe) Dependencies(platform, arch string) []string {
+	return nil
 }
 
 func (r *NcursesRecipe) Prepare(ctx *types.BuildContext) error {

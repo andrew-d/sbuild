@@ -22,9 +22,8 @@ func init() {
 
 func (r *SocatRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "socat",
-		Version:      "1.7.3.0",
-		Dependencies: []string{"openssl", "readline", "ncurses"},
+		Name:    "socat",
+		Version: "1.7.3.0",
 		Sources: []string{
 			"http://www.dest-unreach.org/socat/download/socat-${version}.tar.gz",
 		},
@@ -33,6 +32,10 @@ func (r *SocatRecipe) Info() *types.RecipeInfo {
 		},
 		Binary: true,
 	}
+}
+
+func (r *SocatRecipe) Dependencies(platform, arch string) []string {
+	return []string{"openssl", "readline", "ncurses"}
 }
 
 func (r *SocatRecipe) Build(ctx *types.BuildContext) error {

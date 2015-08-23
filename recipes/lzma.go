@@ -21,9 +21,8 @@ func init() {
 
 func (r *LzmaRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "lzma",
-		Version:      "5.0.8",
-		Dependencies: nil,
+		Name:    "lzma",
+		Version: "5.0.8",
 		Sources: []string{
 			"http://tukaani.org/xz/xz-${version}.tar.gz",
 		},
@@ -32,6 +31,10 @@ func (r *LzmaRecipe) Info() *types.RecipeInfo {
 		},
 		Library: true,
 	}
+}
+
+func (r *LzmaRecipe) Dependencies(platform, arch string) []string {
+	return nil
 }
 
 func (r *LzmaRecipe) Build(ctx *types.BuildContext) error {

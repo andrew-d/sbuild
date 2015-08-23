@@ -28,9 +28,8 @@ func init() {
 
 func (r *TarRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "tar",
-		Version:      "1.28",
-		Dependencies: []string{"libiconv"},
+		Name:    "tar",
+		Version: "1.28",
 		Sources: []string{
 			"https://ftp.gnu.org/gnu/tar/tar-${version}.tar.xz",
 		},
@@ -39,6 +38,10 @@ func (r *TarRecipe) Info() *types.RecipeInfo {
 		},
 		Binary: true,
 	}
+}
+
+func (r *TarRecipe) Dependencies(platform, arch string) []string {
+	return []string{"libiconv"}
 }
 
 func (r *TarRecipe) Prepare(ctx *types.BuildContext) error {

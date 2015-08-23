@@ -51,7 +51,7 @@ func Build(recipes []string, config *config.BuildConfig) error {
 	}
 
 	// Get dependency order for all input recipes.
-	deps, err := getRecipeDeps(recipes)
+	deps, err := getRecipeDeps(recipes, config.Platform, config.Arch)
 	if err != nil {
 		log.WithField("err", err).Error("Could not get recipe dependencies")
 		return err
@@ -152,7 +152,7 @@ func buildOne(name string, ctx *context) error {
 	// Make the environment for this build.  We do this by taking the root
 	// environment, and then merging in all flags from the recursive tree of
 	// dependencies.
-	deps := dependencyNames(name)
+	deps := dependencyNames(name, ctx.config.Platform, ctx.config.Arch)
 	env := ctx.rootEnv
 	envMap := make(map[string]map[string]string)
 	for _, dep := range deps {
@@ -261,7 +261,7 @@ func buildOne(name string, ctx *context) error {
 
 // Returns a sorted list of dependencies for the given recipe name, or an error
 // describing a dependency cycle.
-func getRecipeDeps(recipes []string) ([]string, error) {
+func getRecipeDeps(recipes []string, platform, arch string) ([]string, error) {
 	depgraph := make(graph)
 
 	var visit func(string) error
@@ -271,7 +271,7 @@ func getRecipeDeps(recipes []string) ([]string, error) {
 			return fmt.Errorf("builder: recipe %s does not exist", curr)
 		}
 
-		for _, dep := range recipe.Info().Dependencies {
+		for _, dep := range recipe.Dependencies(platform, arch) {
 			depgraph[dep] = append(depgraph[dep], curr)
 			if err := visit(dep); err != nil {
 				return err

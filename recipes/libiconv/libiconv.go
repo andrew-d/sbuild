@@ -20,7 +20,7 @@ type IconvRecipe struct {
 }
 
 var (
-	log = logmgr.NewLogger("sbuild/recipes/ncurses")
+	log = logmgr.NewLogger("sbuild/recipes/libiconv")
 )
 
 func init() {
@@ -29,9 +29,8 @@ func init() {
 
 func (r *IconvRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "libiconv",
-		Version:      "1.14",
-		Dependencies: nil,
+		Name:    "libiconv",
+		Version: "1.14",
 		Sources: []string{
 			"http://ftp.gnu.org/pub/gnu/libiconv/libiconv-${version}.tar.gz",
 		},
@@ -40,6 +39,10 @@ func (r *IconvRecipe) Info() *types.RecipeInfo {
 		},
 		Library: true,
 	}
+}
+
+func (r *IconvRecipe) Dependencies(platform, arch string) []string {
+	return nil
 }
 
 func (r *IconvRecipe) Prepare(ctx *types.BuildContext) error {

@@ -24,9 +24,8 @@ func init() {
 
 func (r *StraceRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "strace",
-		Version:      "4.10",
-		Dependencies: []string{},
+		Name:    "strace",
+		Version: "4.10",
 		Sources: []string{
 			"http://downloads.sourceforge.net/project/strace/strace/${version}/strace-${version}.tar.xz",
 		},
@@ -35,6 +34,10 @@ func (r *StraceRecipe) Info() *types.RecipeInfo {
 		},
 		Binary: true,
 	}
+}
+
+func (r *StraceRecipe) Dependencies(platform, arch string) []string {
+	return nil
 }
 
 func (r *StraceRecipe) Prepare(ctx *types.BuildContext) error {

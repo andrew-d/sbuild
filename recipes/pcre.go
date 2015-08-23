@@ -20,9 +20,8 @@ func init() {
 
 func (r *PcreRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "pcre",
-		Version:      "8.37",
-		Dependencies: nil,
+		Name:    "pcre",
+		Version: "8.37",
 		Sources: []string{
 			"http://downloads.sourceforge.net/project/pcre/pcre/${version}/pcre-${version}.tar.bz2",
 		},
@@ -31,6 +30,10 @@ func (r *PcreRecipe) Info() *types.RecipeInfo {
 		},
 		Library: true,
 	}
+}
+
+func (r *PcreRecipe) Dependencies(platform, arch string) []string {
+	return nil
 }
 
 func (r *PcreRecipe) Build(ctx *types.BuildContext) error {

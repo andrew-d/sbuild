@@ -21,9 +21,8 @@ func init() {
 
 func (r *ZlibRecipe) Info() *types.RecipeInfo {
 	return &types.RecipeInfo{
-		Name:         "zlib",
-		Version:      "1.2.8",
-		Dependencies: nil,
+		Name:    "zlib",
+		Version: "1.2.8",
 		Sources: []string{
 			"http://zlib.net/zlib-${version}.tar.gz",
 		},
@@ -32,6 +31,10 @@ func (r *ZlibRecipe) Info() *types.RecipeInfo {
 		},
 		Library: true,
 	}
+}
+
+func (r *ZlibRecipe) Dependencies(platform, arch string) []string {
+	return nil
 }
 
 func (r *ZlibRecipe) Build(ctx *types.BuildContext) error {

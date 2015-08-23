@@ -1,6 +1,6 @@
 # From Old `static-binaries` Repo
 
-- [ ] binutils
+- [x] binutils
 - [ ] ht
 - [ ] nmap
 - [ ] python
@@ -17,4 +17,4 @@
 - [ ] curl
 - [ ] busybox
 - [ ] screen
-- [ ] tar (GNU variant)
+- [x] tar (GNU variant)
