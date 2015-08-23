@@ -233,7 +233,22 @@ func buildOne(name string, ctx *context) error {
 		mm[key] = value
 	}
 
-	if err := recipe.Finalize(&buildCtx, ctx.config.OutputDir); err != nil {
+	// Create the output directory for this recipe.
+	outDir := filepath.Join(
+		ctx.config.OutputDir,
+		name,
+		info.Version,
+	)
+	if err := os.MkdirAll(outDir, 0755); err != nil {
+		log.WithFields(logrus.Fields{
+			"recipe": name,
+			"outDir": outDir,
+			"err":    err,
+		}).Error("Could not create output directory")
+		return err
+	}
+
+	if err := recipe.Finalize(&buildCtx, outDir); err != nil {
 		log.WithFields(logrus.Fields{
 			"recipe": name,
 			"err":    err,
